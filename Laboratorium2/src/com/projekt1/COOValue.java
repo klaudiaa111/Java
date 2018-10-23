@@ -3,9 +3,9 @@ package com.projekt1;
 public final class COOValue {
 
     private final int index;
-    private final Object valueOfIndex;
+    private final Value valueOfIndex;
 
-    public COOValue(int index, Object valueOfIndex) {
+    public COOValue(int index, Value valueOfIndex) {
         this.index = index;
         this.valueOfIndex = valueOfIndex;
     }
@@ -14,7 +14,7 @@ public final class COOValue {
         return index;
     }
 
-    public Object getValueOfIndex() {
+    public Value getValueOfIndex() {
         return valueOfIndex;
     }
 
