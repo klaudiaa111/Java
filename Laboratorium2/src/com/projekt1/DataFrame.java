@@ -11,10 +11,10 @@ import java.util.Set;
 
 public class DataFrame {
 
-    private Map<String, ArrayList<Object>> myDatabase;
-    protected Map<String, String> colType;
+    private Map<String, ArrayList<Value>> myDatabase;
+    protected Map<String, Value> colType;
     protected String [] colNames;
-    protected String [] dTypes;
+    protected Value [] dTypes;
 
 
 
@@ -24,18 +24,18 @@ public class DataFrame {
      * @param columnsNames names of columns in database
      * @param dataTypes data types corresponding to columns names
      */
-    public DataFrame(String [] columnsNames, String [] dataTypes) {
+    public DataFrame(String [] columnsNames, Value [] dataTypes) {
 
-        myDatabase = new HashMap<String, ArrayList<Object>>();
-        colType = new HashMap<String, String>();
+        myDatabase = new HashMap<String, ArrayList<Value>>();
+        colType = new HashMap<String, Value>();
         colNames = new String[columnsNames.length];
-        dTypes = new String[dataTypes.length];
+        dTypes = new Value[dataTypes.length];
 
         for(int i = 0 ; i < columnsNames.length ; i++){
 
-            ArrayList<Object> tempList = new ArrayList<Object>();
+            ArrayList<Value> tempList = new ArrayList<Value>();
 
-            // Initializing database: ColumnName --> ArrayList<Object>
+            // Initializing database: ColumnName --> ArrayList<Value>
             myDatabase.put(columnsNames[i], tempList);
 
             // Creating mapping: ColumnName --> DataType
@@ -63,7 +63,7 @@ public class DataFrame {
      * @param colname name of wanted column
      * @return ArrayList<Object> as a column of a database
      */
-    public ArrayList<Object> get(String colname){
+    public ArrayList<Value> get(String colname){
         Set<String> mySet = myDatabase.keySet();
         if(!mySet.contains(colname)){
             System.out.println("Invalid column name. Check your data");
@@ -84,7 +84,7 @@ public class DataFrame {
 
         System.out.println("==== Getting new Frame ====");
         String [] namesCol = new String[cols.length];
-        String [] colsTypes = new String[cols.length];
+        Value [] colsTypes = new Value[cols.length];
         for( int i = 0 ; i < cols.length ; i++){
             namesCol[i] = cols[i];
             colsTypes[i] = colType.get(cols[i]);
@@ -100,8 +100,8 @@ public class DataFrame {
             return newFrame;
         }else{
             for(String col : cols){
-                ArrayList<Object> databaseColumn = new ArrayList<Object>();
-                for(Object obj : myDatabase.get(col)){
+                ArrayList<Value> databaseColumn = new ArrayList<Value>();
+                for(Value obj : myDatabase.get(col)){
                     databaseColumn.add(obj);
                 }
                 newFrame.getMyDatabase().put(col, databaseColumn);
@@ -123,7 +123,7 @@ public class DataFrame {
         DataFrame dataFrame = new DataFrame(colNames, dTypes);
 
         for(String col : colNames){
-            ArrayList<Object> oneByOneColumn = new ArrayList<Object>();
+            ArrayList<Value> oneByOneColumn = new ArrayList<Value>();
             oneByOneColumn.add(myDatabase.get(col).get(i-1));
             dataFrame.getMyDatabase().put(col, oneByOneColumn);
         }
@@ -145,7 +145,7 @@ public class DataFrame {
         for(int i = from ; i <= to ; i++){
 
             DataFrame tempFrame = this.iloc(i);
-            Map<String, Object> tempMap = new HashMap<String, Object>();
+            Map<String, Value> tempMap = new HashMap<String, Value>();
             for(String col : colNames){
                 tempMap.put(col, tempFrame.get(col).get(0));
             }
@@ -159,7 +159,7 @@ public class DataFrame {
      * Insert a row of data into the database
      * @param row map representing ( column, value ) pairs to be inserted
      */
-    public boolean insertRow( Map<String, Object> row ){
+    public boolean insertRow( Map<String, Value> row ){
 
         // Valid size of inserting data
         if(row.size() != myDatabase.size()){
@@ -205,11 +205,11 @@ public class DataFrame {
         for(int i = 0 ; i < myDatabase.get(colNames[0]).size() ; i++){
             for(int j = 0 ; j < colNames.length ; j++){
 
-                ArrayList<Object> databaseRow = myDatabase.get(colNames[j]);
-                Object obj = databaseRow.get(i);
-                String dataType = colType.get(colNames[j]);
+                ArrayList<Value> databaseRow = myDatabase.get(colNames[j]);
+                Value obj = databaseRow.get(i);
+                Value dataType = colType.get(colNames[j]);
                 if(dataType.equals("string") || dataType.equals("String")){
-                    String toPrint = (String) obj;
+                    Value toPrint = (Value) obj;
                     System.out.print(toPrint);
                 } else if ( dataType.equals("MyCustomType") || dataType.equals("myCustomType")){
                     MyCustomType myCustomType = (MyCustomType) obj;
@@ -228,7 +228,7 @@ public class DataFrame {
     }
 
 
-    public Map<String, ArrayList<Object>> getMyDatabase() {
+    public Map<String, ArrayList<Value>> getMyDatabase() {
         return myDatabase;
     }
 
