@@ -4,9 +4,11 @@ import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 
-public class Integer extends Value {
+public class Integer extends Value implements Cloneable{
 
     final int val;
+
+    public Integer(){this.val = 0;}
 
     public Integer(int a){
         this.val=a;
@@ -75,86 +77,62 @@ public class Integer extends Value {
 
     @Override
     public boolean eq(Value v) {
-        int a=0;
         if (v instanceof Integer) {
             Integer parsedValue = (Integer) v;
             if(this.val == parsedValue.val){
-                a=1;
+                return true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean neq(Value v) {
-        int a=0;
         if (v instanceof Integer) {
             Integer parsedValue = (Integer) v;
             if(this.val == parsedValue.val){
-                a=1;
+                return false;
             }
             else{
-                a=0;
+                return true;
             }
 
         }
-        if(a==1){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return false;
     }
 
     @Override
     public boolean gte(Value v) {
-        int a=0;
         if (v instanceof Integer) {
             Integer parsedValue = (Integer) v;
             if(this.val < parsedValue.val){
-                a=1;
+                return true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean lte(Value v) {
-        int a=0;
         if (v instanceof Integer) {
             Integer parsedValue = (Integer) v;
             if(this.val > parsedValue.val){
-                a=1;
+                return true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override
@@ -188,4 +166,5 @@ public class Integer extends Value {
         int value = parseInt(s);
         return new Integer(value);
     }
+
 }

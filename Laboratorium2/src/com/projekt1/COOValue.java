@@ -1,6 +1,6 @@
 package com.projekt1;
 
-public final class COOValue {
+public final class COOValue{
 
     private final int index;
     private final Value valueOfIndex;

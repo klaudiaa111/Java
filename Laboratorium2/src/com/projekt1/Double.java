@@ -4,9 +4,11 @@ import java.util.Objects;
 
 import static java.lang.Double.parseDouble;
 
-public class Double extends Value {
+public class Double extends Value implements Cloneable{
 
     final double val;
+
+    public Double(){this.val = 0;}
 
     public Double(double a){
         this.val=a;
@@ -74,86 +76,62 @@ public class Double extends Value {
 
     @Override
     public boolean eq(Value v) {
-       int a=0;
         if (v instanceof Double) {
             Double parsedValue = (Double) v;
             if(this.val == parsedValue.val){
-                a=1;
+                return true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean neq(Value v) {
-        int a=0;
         if (v instanceof Double) {
             Double parsedValue = (Double) v;
             if(this.val == parsedValue.val){
-                a=1;
+                return false;
             }
             else{
-                a=0;
+                return true;
             }
 
         }
-        if(a==1){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return false;
     }
 
     @Override
     public boolean gte(Value v) {
-        int a=0;
         if (v instanceof Double) {
             Double parsedValue = (Double) v;
             if(this.val < parsedValue.val){
-                a=1;
+                return  true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean lte(Value v) {
-        int a=0;
         if (v instanceof Double) {
             Double parsedValue = (Double) v;
             if(this.val > parsedValue.val){
-                a=1;
+                return true;
             }
             else{
-                a=0;
+                return false;
             }
 
         }
-        if(a==1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     @Override

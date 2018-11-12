@@ -8,7 +8,7 @@ import java.util.Set;
 public class SparseDataFrame extends  DataFrame {
 
     private Map<String, ArrayList<COOValue>> myValidData;
-    private Object hide;
+    private Value hide;
 
     /**
      * Create database with given columns names and types
@@ -16,7 +16,7 @@ public class SparseDataFrame extends  DataFrame {
      * @param columnsNames names of columns in database
      * @param dataTypes    data types corresponding to columns names
      */
-    public SparseDataFrame(String[] columnsNames, String[] dataTypes, Object hide) {
+    public SparseDataFrame(String[] columnsNames, ArrayList<Class<? extends Value>> dataTypes, Value hide) {
         super(columnsNames, dataTypes);
         this.hide = hide;
         myValidData = new HashMap<String, ArrayList<COOValue>>();
@@ -48,14 +48,14 @@ public class SparseDataFrame extends  DataFrame {
     }
 
     @Override
-    public ArrayList<Object> get(String colname) {
+    public ArrayList<Value> get(String colname) {
         Set<String> mySet = myValidData.keySet();
         if(!mySet.contains(colname)){
             System.out.println("Invalid column name. Check your data");
             return  null;
         }
         System.out.println("==== Returning column of given name - SparseDataFrame ====");
-        ArrayList<Object> objArr = new ArrayList<Object>();
+        ArrayList<Value> objArr = new ArrayList<Value>();
         for(COOValue cooValue : myValidData.get(colname)){
             objArr.add(cooValue.getValueOfIndex());
         }
@@ -67,10 +67,10 @@ public class SparseDataFrame extends  DataFrame {
     public SparseDataFrame get(String[] cols, boolean copy) {
         System.out.println("==== Getting new Frame ====");
         String [] namesCol = new String[cols.length];
-        String [] colsTypes = new String[cols.length];
+        ArrayList<Class<? extends Value>> colsTypes = new ArrayList<Class<? extends Value>>();
         for( int i = 0 ; i < cols.length ; i++){
             namesCol[i] = cols[i];
-            colsTypes[i] = colType.get(cols[i]);
+            colsTypes.add(colType.get(cols[i]));
         }
 
         SparseDataFrame newFrame = new SparseDataFrame(namesCol, colsTypes, hide);
@@ -82,9 +82,9 @@ public class SparseDataFrame extends  DataFrame {
             return newFrame;
         }else{
             for(String col : cols){
-                ArrayList<Object> databaseColumn = new ArrayList<Object>();
+                ArrayList<Value> databaseColumn = new ArrayList<Value>();
                 ArrayList<COOValue> myValidColumn = new ArrayList<COOValue>();
-                for(Object obj : super.getMyDatabase().get(col)){
+                for(Value obj : super.getMyDatabase().get(col)){
                     databaseColumn.add(obj);
                 }
                 for(COOValue cooValue : this.myValidData.get(col)){
@@ -111,46 +111,15 @@ public class SparseDataFrame extends  DataFrame {
 
         for(String col : colNames){
 
-            ArrayList<Object> oneByOneColumn = new ArrayList<Object>();
+            ArrayList<Value> oneByOneColumn = new ArrayList<Value>();
 
-            if(super.dTypes[0].equals("int") || super.dTypes[0].equals("Integer")){
-                Integer hiddenValue = Integer.parseInt((String) hide);
-                Integer insertedValue = (Integer) super.getMyDatabase().get(col).get(i-1);
+                Value hiddenValue = hide;
+                Value insertedValue = super.getMyDatabase().get(col).get(i-1);
                 if(!hiddenValue.equals(insertedValue)){
                     COOValue cooValue = new COOValue(0, insertedValue);
                     sparseDataFrame.getMyValidData().get(col).add(cooValue);
-                }
-            } else if(super.dTypes[0].equals("double") || super.dTypes[0].equals("Double")){
-                Double hiddenValue = Double.parseDouble((String) hide);
-                Double insertedValue = (Double) super.getMyDatabase().get(col).get(i-1);
-                if(!hiddenValue.equals(insertedValue)){
-                    COOValue cooValue = new COOValue(0, insertedValue);
-                    sparseDataFrame.getMyValidData().get(col).add(cooValue);
-                }
-            } else if(super.dTypes[0].equals("float") || super.dTypes[0].equals("Float")){
-                Float hiddenValue = Float.parseFloat((String) hide);
-                Float insertedValue = (Float) super.getMyDatabase().get(col).get(i-1);
-                if(!hiddenValue.equals(insertedValue)){
-                    COOValue cooValue = new COOValue(0, insertedValue);
-                    sparseDataFrame.getMyValidData().get(col).add(cooValue);
-                }
-            } else if(super.dTypes[0].equals("String") || super.dTypes[0].equals("string")){
-                String hiddenValue = (String) hide;
-                String insertedValue = (String) super.getMyDatabase().get(col).get(i-1);
-                if(!hiddenValue.equals(insertedValue)){
-                    COOValue cooValue = new COOValue(0, insertedValue);
-                    sparseDataFrame.getMyValidData().get(col).add(cooValue);
-                }
-            } else if(super.dTypes[0].equals("MyCustomType") || super.dTypes[0].equals("myCustomType")){
-                MyCustomType hiddenValue = (MyCustomType) hide;
-                MyCustomType insertedValue = (MyCustomType) super.getMyDatabase().get(col).get(i-1);
-                if(!hiddenValue.equals(insertedValue)){
-                    COOValue cooValue = new COOValue(0, insertedValue);
-                    sparseDataFrame.getMyValidData().get(col).add(cooValue);
-                }
+
             }
-
-
             oneByOneColumn.add(super.getMyDatabase().get(col).get(i-1));
             sparseDataFrame.getMyDatabase().put(col, oneByOneColumn);
 
@@ -177,7 +146,7 @@ public class SparseDataFrame extends  DataFrame {
             System.out.println(i);
             SparseDataFrame sparseDataFrameTemp = this.iloc(i);
             sparseDataFrameTemp.showDatabase();
-            Map<String, Object> tempMap = new HashMap<String, Object>();
+            Map<String, Value> tempMap = new HashMap<String, Value>();
             for(String col : colNames){
                 System.out.println("aaaaaaaaaa");
                 tempMap.put(col, sparseDataFrameTemp.getMyDatabase().get(col).get(0));
@@ -193,52 +162,20 @@ public class SparseDataFrame extends  DataFrame {
 
 
     @Override
-    public boolean insertRow(Map<String, Object> row) {
+    public boolean insertRow(Map<String, Value> row) {
 
 
         if(super.insertRow(row)){
 
             for(String col : super.colNames){
 
-                if(super.dTypes[0].equals("int") || super.dTypes[0].equals("Integer")){
-                    Integer hiddenValue = Integer.parseInt((String) hide);
-                    Integer insertedValue = (Integer) row.get(col);
+                    Value hiddenValue = hide;
+                    Value insertedValue = row.get(col);
                     if(!hiddenValue.equals(insertedValue)){
                         COOValue cooValue = new COOValue(super.size()-1, insertedValue);
                         myValidData.get(col).add(cooValue);
                     }
-                } else if(super.dTypes[0].equals("double") || super.dTypes[0].equals("Double")){
-                    Double hiddenValue = Double.parseDouble((String) hide);
-                    Double insertedValue = (Double) row.get(col);
-                    if(!hiddenValue.equals(insertedValue)){
-                        COOValue cooValue = new COOValue(super.size()-1, insertedValue);
-                        myValidData.get(col).add(cooValue);
-                    }
-                } else if(super.dTypes[0].equals("float") || super.dTypes[0].equals("Float")){
-                    Float hiddenValue = Float.parseFloat((String) hide);
-                    Float insertedValue = (Float) row.get(col);
-                    if(!hiddenValue.equals(insertedValue)){
-                        COOValue cooValue = new COOValue(super.size()-1, insertedValue);
-                        myValidData.get(col).add(cooValue);
-                    }
-                } else if(super.dTypes[0].equals("String") || super.dTypes[0].equals("string")){
-                    String hiddenValue = (String) hide;
-                    String insertedValue = (String) row.get(col);
-                    if(!hiddenValue.equals(insertedValue)){
-                        COOValue cooValue = new COOValue(super.size()-1, insertedValue);
-                        myValidData.get(col).add(cooValue);
-                    }
-                } else if(super.dTypes[0].equals("MyCustomType") || super.dTypes[0].equals("myCustomType")){
-                    MyCustomType hiddenValue = (MyCustomType) hide;
-                    MyCustomType insertedValue = (MyCustomType) row.get(col);
-                    if(!hiddenValue.equals(insertedValue)){
-                        COOValue cooValue = new COOValue(super.size()-1, insertedValue);
-                        myValidData.get(col).add(cooValue);
-                    }
-                }
-
             }
-
             return true;
         }
         else{
@@ -279,7 +216,7 @@ public class SparseDataFrame extends  DataFrame {
                 if(myValidData.get(colNames[j]).get(i) != null){
                     Object obj = super.getMyDatabase().get(colNames[j]).get(myValidData.get(colNames[j]).get(i).getIndex());
 
-                    String dataType = colType.get(colNames[j]);
+                    Class<? extends Value> dataType = colType.get(colNames[j]);
                     if(dataType.equals("string") || dataType.equals("String")){
                         String toPrint = (String) obj;
                         System.out.print(toPrint);
