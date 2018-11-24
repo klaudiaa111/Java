@@ -3,6 +3,9 @@ package com.projekt1;
 import javax.xml.crypto.Data;
 import java.util.*;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 public class Groups implements Groupby{
     LinkedList<DataFrame> grouped;
     String[] ids;
@@ -74,9 +77,9 @@ public class Groups implements Groupby{
         DataFrame df = new DataFrame(grouped.get(0).colNames, grouped.get(0).dTypes);
         for(DataFrame d : grouped){
             for(String s : d.colNames){
-                if(!Arrays.asList(ids).contains(s)){
+                if(!Arrays.asList(ids).contains(s) && !s.equals("date") && !s.equals("id")){
                     Value v = d.get(s).get(0);
-                    for(int i=1; i<d.size(); i++){
+                    for(int i=1; i<d.size()-1; i++){
                         v = v.add(d.get(s).get(i));
                     }
                     if(v.getClass()==Integer.class) {
@@ -100,20 +103,17 @@ public class Groups implements Groupby{
         return df;
     }
 
-    @Override
-    public DataFrame std() {
-        return null;
-    }
 
     @Override
     public DataFrame sum() {
         DataFrame df = new DataFrame(grouped.get(0).colNames, grouped.get(0).dTypes);
         for(DataFrame d : grouped){
             for(String s : d.colNames){
-                if(!Arrays.asList(ids).contains(s)){
+
+                if(!Arrays.asList(ids).contains(s) && !s.equals("date") && !s.equals("id")){
                     Value v = d.get(s).get(0);
                     for(int i=1; i<d.size(); i++){
-                        v = v.add(d.get(s).get(i)) ;
+                        v = v.add(d.get(s).get(i));
                     }
                     df.get(s).add(v);
                 }
@@ -130,9 +130,101 @@ public class Groups implements Groupby{
 
     @Override
     public DataFrame var() {
-        return null;
+        DataFrame df = new DataFrame(grouped.get(0).colNames, grouped.get(0).dTypes);
+        for(DataFrame d : grouped){
+            for(String s : d.colNames){
+                if(!Arrays.asList(ids).contains(s) && !s.equals("date") && !s.equals("id")){
+                    Value v = d.get(s).get(0);
+                    for(int i=1; i<d.size(); i++){
+                        v = v.add(d.get(s).get(i));
+                    }
+                    if(v.getClass()==Integer.class) {
+                        v = v.div(new Integer(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Integer(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Integer(2)));
+                        }
+                        b = b.div(new Integer(d.size()));
+                        df.get(s).add(b);
+                    }
+                    else if(v.getClass()==Float.class){
+                        v = v.div(new Float(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Float(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Float(2)));
+                        }
+                        b = b.div(new Float(d.size()));
+                        df.get(s).add(b);
+                    }
+                    else if(v.getClass()==Double.class){
+                        v = v.div(new Double(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Double(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Double(2)));
+                        }
+                        b = b.div(new Double(d.size()));
+                        df.get(s).add(b);
+                    }
+                }
+                else{
+                    df.get(s).add(d.get(s).get(0));
+                }
+            }
+
+        }
+        System.out.println();
+        System.out.println("==== Sum ====");
+        return df;
     }
 
+    @Override
+    public DataFrame std() {
+        DataFrame df = new DataFrame(grouped.get(0).colNames, grouped.get(0).dTypes);
+        for(DataFrame d : grouped){
+            for(String s : d.colNames){
+                if(!Arrays.asList(ids).contains(s) && !s.equals("date") && !s.equals("id")){
+                    Value v = d.get(s).get(0);
+                    for(int i=1; i<d.size(); i++){
+                        v = v.add(d.get(s).get(i));
+                    }
+                    if(v.getClass()==Integer.class) {
+                        v = v.div(new Integer(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Integer(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Integer(2)));
+                        }
+                        b = b.div(new Integer(d.size()));
+                        df.get(s).add(b);
+                    }
+                    else if(v.getClass()==Float.class){
+                        v = v.div(new Float(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Float(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Float(2)));
+                        }
+                        b = b.div(new Float(d.size()));
+                        df.get(s).add(b);
+                    }
+                    else if(v.getClass()==Double.class){
+                        v = v.div(new Double(d.size()));
+                        Value b = (d.get(s).get(0).sub(v)).pow(new Double(2));
+                        for(int i=1; i<d.size(); i++){
+                            b = b.add((d.get(s).get(i).sub(v)).pow(new Double(2)));
+                        }
+                        b = b.div(new Double(d.size()));
+                        df.get(s).add(b);
+                    }
+                }
+                else{
+                    df.get(s).add(d.get(s).get(0));
+                }
+            }
+
+        }
+        System.out.println();
+        System.out.println("==== Sum ====");
+        return df;
+    }
     @Override
     public DataFrame apply(Applayable a) {
         return null;

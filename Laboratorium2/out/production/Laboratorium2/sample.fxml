@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+    <columnConstraints>
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+    </rowConstraints>
+    <children>
+        <BorderPane prefHeight="276.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <top>
+                <HBox prefHeight="33.0" prefWidth="418.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button mnemonicParsing="false" text="Open File" />
+                    </children></HBox>
+            </top>
+            <left>
+                <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Label text="Groupby" />
+                        <CheckBox mnemonicParsing="false" text="id" />
+                        <CheckBox mnemonicParsing="false" text="date" />
+                        <CheckBox mnemonicParsing="false" text="total" />
+                        <CheckBox mnemonicParsing="false" text="value" />
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <ChoiceBox prefWidth="150.0" BorderPane.alignment="CENTER" />
+            </center>
+            <bottom>
+                <Button mnemonicParsing="false" text="OK" BorderPane.alignment="CENTER" />
+            </bottom>
+        </BorderPane>
+    </children>
+</GridPane>

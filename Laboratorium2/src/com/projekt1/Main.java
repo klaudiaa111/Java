@@ -1,11 +1,19 @@
 package com.projekt1;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static javafx.application.Application.launch;
 
 public class Main {
 
@@ -180,8 +188,10 @@ public class Main {
 
         DataFrame data = new DataFrame("groupby.csv", arr2, true);
         System.out.println(data.size());
-        data.showDatabase();
-       // data.groupby("id").max().showDatabase();
+       //data.groupby("id").max().showDatabase();
+        data.mindf().showDatabase();
+        System.out.println(dt.create("2018-12-01").lte(dt.create("2017-02-01")));
+        data.groupby(new String[]{"id"}).var().showDatabase();
         br.close();
 
     }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="444.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ReadFile">
+   <children>
+      <AnchorPane layoutX="142.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <BorderPane layoutX="-14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+               <bottom>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </bottom>
+               <right>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TextField fx:id="namefield" layoutX="107.0" layoutY="14.0" promptText="Nazwa pliku" />
+                        <ButtonBar layoutX="14.0" layoutY="126.0" prefHeight="40.0" prefWidth="200.0" />
+                     </children>
+                  </AnchorPane>
+               </right>
+            </BorderPane>
+          <Button fx:id="read" layoutX="154.0" layoutY="92.0" mnemonicParsing="false" onAction="#onButtonClicked" text="OK" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="68.0" layoutY="40.0" prefHeight="21.0" prefWidth="212.0" text="Wczytywanie danych z pliku" />
+      <ButtonBar layoutX="-100.0" layoutY="200.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button mnemonicParsing="false" text="Min" />
+        </buttons>
+      </ButtonBar>
+      <ButtonBar layoutX="-100.0" layoutY="314.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button mnemonicParsing="false" text="Mean" />
+        </buttons>
+      </ButtonBar>
+      <ButtonBar layoutX="-100.0" layoutY="240.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button mnemonicParsing="false" text="Max" />
+        </buttons>
+      </ButtonBar>
+    <Button layoutX="25.0" layoutY="280.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="75.0" text="Sum" />
+   </children>
+</AnchorPane>

@@ -7,15 +7,15 @@ import java.util.Date;
 import java.util.Objects;
 
 public class DateTime extends Value implements Cloneable{
-    Date val = new Date();
+        Date val = new Date();
 
-    public DateTime(){
-        this.val = new Date();
-    }
-    public DateTime(Date d){
-        this.val=d;
+        public DateTime(){
+            this.val = new Date();
+        }
+        public DateTime(Date d){
+            this.val=d;
 
-    }
+        }
 
     @Override
     public String toString() {
@@ -118,7 +118,8 @@ public class DateTime extends Value implements Cloneable{
         if (getClass() != other.getClass()) {
             return false;
         }
-        final Str that = (Str) other;
+
+        final DateTime that = (DateTime) other;
         if (!Objects.equals(this.val, that.val)) {
             return false;
         }

@@ -97,7 +97,6 @@ public class DataFrame {
             //  Read File Line By Line
             int counter = 0;
             while ((strLine = br.readLine()) != null) {
-                strLine = br.readLine();
                 values = strLine.split(",");
 
                 Map<String, Value> myNewRow = new HashMap<String, Value>();
@@ -242,7 +241,6 @@ public class DataFrame {
      * @return number of rows in a database
      */
     public int size(){
-        System.out.println("==== Returning size ====");
         return myDatabase.get(colNames[0]).size();
     }
 
@@ -257,7 +255,6 @@ public class DataFrame {
             System.out.println("Invalid column name. Check your data");
             return  null;
         }
-        System.out.println("==== Returning column of given name ====");
         return myDatabase.get(colname);
     }
 
@@ -366,7 +363,7 @@ public class DataFrame {
         }
 
         // Insert data
-        System.out.println("===== Inserting row =====");
+
         for( String cName : colNames){
             myDatabase.get(cName).add( row.get(cName) );
         }
@@ -541,5 +538,63 @@ public class DataFrame {
         }
         return this;
     }
-
+    public DataFrame mindf(){
+        DataFrame df = new DataFrame(colNames, dTypes);
+        for(String s : colNames){
+                Value v = this.get(s).get(0);
+                for(int i=1; i<this.size(); i++){
+                    if(v.lte(this.get(s).get(i))) {
+                        v = this.get(s).get(i);
+                    }
+                }
+                df.get(s).add(v);
+        }
+        return df;
     }
+    public DataFrame maxdf(){
+        DataFrame df = new DataFrame(colNames, dTypes);
+        for(String s : colNames){
+            Value v = this.get(s).get(0);
+            for(int i=1; i<this.size(); i++){
+                if(v.gte(this.get(s).get(i))) {
+                    v = this.get(s).get(i);
+                }
+            }
+            df.get(s).add(v);
+        }
+        return df;
+    }
+    public DataFrame meandf() {
+
+        DataFrame df = new DataFrame(colNames, dTypes);
+            for(String s : colNames){
+                    Value v = this.get(s).get(0);
+                    for(int i=1; i<this.size(); i++){
+                        v = v.add(this.get(s).get(i));
+                    }
+                    if(v.getClass()==Integer.class) {
+                        df.get(s).add(v.div(new Integer(this.size())));
+                    }
+                    else if(v.getClass()==Float.class){
+                        df.get(s).add(v.div(new Float(this.size())));
+                    }
+                    else if(v.getClass()==Double.class){
+                        df.get(s).add(v.div(new Double(this.size())));
+                    }
+            }
+        return df;
+    }
+    public DataFrame sumdf() {
+        DataFrame df = new DataFrame(colNames, dTypes);
+            for(String s : colNames){
+                    Value v = this.get(s).get(0);
+                    for(int i=1; i<this.size(); i++){
+                        v = v.add(this.get(s).get(i)) ;
+                    }
+                    df.get(s).add(v);
+            }
+        return df;
+    }
+
+
+}
